@@ -147,6 +147,8 @@ bindsym $mod+r mode "resize"
 bindsym XF86AudioLowerVolume exec amixer set Master 2dB-
 bindsym XF86AudioRaiseVolume exec amixer set Master 2dB+
 bindsym XF86AudioMute exec amixer -D pulse sset Master toggle
+bindsym XF86MonBrightnessDown exec ~/.i3/brightness.sh -20
+bindsym XF86MonBrightnessUp exec ~/.i3/brightness.sh 20
 
 bindsym $mod+z move scratchpad
 bindsym $mod+x scratchpad show
