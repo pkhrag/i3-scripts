@@ -5,6 +5,17 @@
 # this file and re-run i3-config-wizard(1).
 #
 
+set $tag1 "1 "
+set $tag2 "2 ✉"
+set $tag3 "3 ♫"
+set $tag4 "4 "
+set $tag8 "8 "
+set $tag5 "5 "
+set $tag6 "6 "
+set $tag7 "7 "
+set $tag9 "9 "
+set $tag0 ""
+
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
@@ -93,10 +104,10 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
+bindsym $mod+1 workspace $tag1
+bindsym $mod+2 workspace $tag2
+bindsym $mod+3 workspace $tag3
+bindsym $mod+4 workspace $tag4
 bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
@@ -105,10 +116,10 @@ bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+1 move container to workspace $tag1
+bindsym $mod+Shift+2 move container to workspace $tag2
+bindsym $mod+Shift+3 move container to workspace $tag3
+bindsym $mod+Shift+4 move container to workspace $tag4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
@@ -121,7 +132,17 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+mode "(s)leep (h)ybernate (r)eboot (p)oweroff (e)xit-i3" {
+        bindsym s exec i3lock -c 000000 && systemctl suspend; mode "default"
+        bindsym h exec i3lock -c 000000 && systemctl hibernate; mode "default"
+        bindsym p exec systemctl poweroff; mode "default"
+        bindsym r exec systemctl reboot; mode "default"
+        bindsym e exec --no-startup-id i3-msg exit; mode "default"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+bindsym $mod+Shift+e mode "(s)leep (h)ybernate (r)eboot (p)oweroff (e)xit-i3"
+# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 # killing workspace
 bindsym $mod+Control+Shift+k focus parent, kill
 # resize window (you can also use the mouse for that)
@@ -132,16 +153,16 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym j resize shrink width 5 px or 5 ppt
+        bindsym k resize grow height 5 px or 5 ppt
+        bindsym l resize shrink height 5 px or 5 ppt
+        bindsym semicolon resize grow width 5 px or 5 ppt
 
         # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Left resize shrink width 5 px or 5 ppt
+        bindsym Down resize grow height 5 px or 5 ppt
+        bindsym Up resize shrink height 5 px or 5 ppt
+        bindsym Right resize grow width 5 px or 5 ppt
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -159,6 +180,7 @@ bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2
 # bindsym XF86AudioPause exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop    
 bindsym XF86AudioPause exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause 
 bindsym XF86AudioNext exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+bindsym Print exec gnome-screenshot
 
 bindsym $mod+z move scratchpad
 bindsym $mod+x scratchpad show
@@ -166,13 +188,18 @@ bindsym $mod+c exec google-chrome
 bindsym $mod+d exec rofi -show run -fg '#eceff1' -bg '#263238' -bgalt '#263942' -padding 10 -bw 10 -tokenize
 
 exec --no-startup-id nm-applet
+exec --no-startup-id syndaemon -t -k -d 
 #Disable title bar
 new_window 1pixel
 #For Desktop Wallpapers
-exec --no-startup-id feh --bg-scale ~/Pictures/wallpaper2.jpg
+exec --no-startup-id feh --bg-scale ~/Pictures/wallpaper3.jpg
 exec synclient VertEdgeScroll=0
 exec --no-startup-id xcompmgr -cfn
-exec --no-startup-id syndaemon -t -k -d 
+exec --no-startup-id dunst
+exec --no-startup-id ibus-daemon --xim -d -r 
+exec --no-startup-id redshift 
+exec --no-startup-id conky -d -c ~/.conky/GAD/conky_seamod
+exec --no-startup-id conky -d -c ~/.conky/GAD/conky-left
 
 # Colors
 client.focused #007fbf #007fbf #ffffff
@@ -196,3 +223,4 @@ bar {
         }
         font pango:DejaVu Sans Mono, Awesome 8.5
 }
+
